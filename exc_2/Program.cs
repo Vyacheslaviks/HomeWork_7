@@ -5,12 +5,21 @@
 
 //Тело программы
 
-Console.Write("Введите индексы искомого элемента: ");
+Console.WriteLine("Введите индексы искомого элемента: ");
 int NumRow = InputInt();
 int NumColumn = InputInt();
 
-int[,] local_array = GenRandomArray(5,5);
+int[,] local_array = GenRandomArray(5, 3);
 PrintArray(local_array);
+
+try
+{
+    Console.Write($"Искомый элемент имеет значение: {SearcElement(local_array, NumRow, NumColumn)}");
+}
+catch(Exception ms)
+{
+    Console.WriteLine(ms.Message);
+}
 
 //Методы
 
@@ -18,7 +27,7 @@ int InputInt()
 {
     bool isParse = int.TryParse(Console.ReadLine(), out int number);
 
-    if(isParse)
+    if (isParse)
     {
         return number;
     }
@@ -30,14 +39,14 @@ int InputInt()
 
 int[,] GenRandomArray(int CountRows, int CountColumns)
 {
-    int[,] array = new int[CountRows,CountColumns];
+    int[,] array = new int[CountRows, CountColumns];
     Random rand = new Random();
 
-    for(int i = 0; i < array.GetLength(0); i++)
+    for (int i = 0; i < array.GetLength(0); i++)
     {
-        for(int j = 0; j < array.GetLength(1); j++)
+        for (int j = 0; j < array.GetLength(1); j++)
         {
-            array[i,j] = rand.Next(0,11);
+            array[i, j] = rand.Next(0, 10);
         }
     }
 
@@ -46,11 +55,11 @@ int[,] GenRandomArray(int CountRows, int CountColumns)
 
 void PrintArray(int[,] array)
 {
-    for(int i = 0; i < array.GetLength(0); i++)
+    for (int i = 0; i < array.GetLength(0); i++)
     {
-        for(int j = 0; j < array.GetLength(1); j++)
+        for (int j = 0; j < array.GetLength(1); j++)
         {
-                Console.Write($"{array[i,j]}    ");
+            Console.Write($"{array[i, j]}    ");
         }
         Console.WriteLine();
     }
@@ -59,15 +68,15 @@ void PrintArray(int[,] array)
 int SearcElement(int[,] array, int Row, int Column)
 {
     int element = 0;
-    for(int i = 0; i < array.GetLength(0); i++)
+
+    if (Row >= 0 && Row < array.GetLength(0) && Column >= 0 && Column < array.GetLength(1))
     {
-        for(int j = 0; j < array.GetLength(1); j++)
-        {
-            if(i == Row && j == Column)
-            {
-                element = array[i,j];
-                return element;
-            }
-        }
+        element = array[Row, Column];
     }
+    else
+    {
+        throw new Exception("Такого элемента нет!");
+    }
+
+    return element;
 }
